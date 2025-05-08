@@ -1,0 +1,70 @@
+/* Navbar.css */
+
+.custom-navbar {
+  font-family: 'Poppins', sans-serif;
+  background-color: #1c1c1c !important;
+  padding: 0.75rem 1rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+}
+
+.custom-navbar .navbar-brand span {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.custom-navbar .nav-link {
+  color: #dcdcdc !important;
+  margin: 0 10px;
+  transition: color 0.3s ease;
+}
+
+.custom-navbar .nav-link:hover,
+.custom-navbar .nav-link.active {
+  color: #0d6efd !important;
+  font-weight: 500;
+}
+
+.custom-navbar .dropdown-menu {
+  background-color: #2c2c2c;
+}
+
+.custom-navbar .dropdown-item {
+  color: #dcdcdc;
+}
+
+.custom-navbar .dropdown-item:hover {
+  background-color: #444;
+  color: #ffffff;
+}
+
+.custom-navbar .btn-outline-light {
+  border-color: #fff;
+  color: #fff;
+  font-weight: 500;
+  transition: 0.3s;
+}
+
+.custom-navbar .btn-outline-light:hover {
+  background-color: #ffffff;
+  color: #000000;
+}
+
+.custom-navbar .btn-primary {
+  font-weight: 500;
+  padding: 6px 16px;
+}
+
+@media (max-width: 992px) {
+  .custom-navbar .navbar-collapse {
+    background-color: #1c1c1c;
+    padding: 1rem;
+    border-radius: 10px;
+    margin-top: 10px;
+  }
+
+  .custom-navbar .btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+}
