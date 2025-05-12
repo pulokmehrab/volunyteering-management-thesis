@@ -4,7 +4,7 @@ const connectDB = require('./config/db');
 const { authRouter } = require('./routes/auth');
 const shiftsRoute = require('./routes/shifts');  // Import the shifts route
 const usersRoute = require('./routes/users');
-
+const eventsRoute = require('./routes/events');
 const app = express();
 const port = 5000;
 
@@ -18,6 +18,8 @@ app.use(express.json());  // To parse JSON bodies
 app.use('/api/auth', authRouter);  // Auth routes
 app.use('/api/shifts', shiftsRoute);  // Shifts routes
 app.use('/api/users', usersRoute);
+app.use('/api/events', eventsRoute);
+
 
 app.get('/', (req, res)=>{
   res.send("Server is running!")
