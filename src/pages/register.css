@@ -2,65 +2,169 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
-  background: #f4f7fa;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 100vh;
+  background-color: #f5f5f5;
+  padding: 20px;
 }
 
 .register-card {
-  background: #ffffff;
-  padding: 40px;
-  border-radius: 12px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+  background: white;
+  padding: 2rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   width: 100%;
-  max-width: 400px;
-  text-align: center;
+  max-width: 500px;
 }
 
 .register-title {
-  font-size: 26px;
-  font-weight: 600;
-  margin-bottom: 25px;
+  text-align: center;
   color: #333;
+  margin-bottom: 2rem;
 }
 
 .register-form {
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  gap: 1rem;
+}
+
+.profile-picture-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.profile-picture-container {
+  position: relative;
+  width: 150px;
+  height: 150px;
+  margin-bottom: 15px;
+}
+
+.profile-picture-preview {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #4a90e2;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.profile-picture-input {
+  display: none;
+}
+
+.profile-picture-label {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #4a90e2;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background-color 0.2s;
+  white-space: nowrap;
+}
+
+.profile-picture-label:hover {
+  background-color: #357abd;
+}
+
+.profile-picture-error {
+  color: #dc3545;
+  font-size: 14px;
+  margin-top: 5px;
+  text-align: center;
 }
 
 .register-input,
 .register-select {
-  padding: 12px 16px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  font-size: 14px;
+  padding: 0.75rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 1rem;
 }
 
 .register-input:focus,
 .register-select:focus {
-  border-color: #007bff;
   outline: none;
+  border-color: #4a90e2;
+}
+
+.categories-section {
+  margin: 1rem 0;
+}
+
+.categories-section label {
+  display: block;
+  margin-bottom: 0.5rem;
+  color: #333;
+  font-weight: 500;
+}
+
+.categories-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.category-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.category-checkbox input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
 }
 
 .register-btn {
-  padding: 12px;
-  background-color: #007bff;
+  background-color: #4a90e2;
   color: white;
+  padding: 0.75rem;
   border: none;
-  border-radius: 8px;
-  font-size: 16px;
+  border-radius: 4px;
+  font-size: 1rem;
   cursor: pointer;
-  transition: 0.3s ease;
+  transition: background-color 0.2s;
 }
 
 .register-btn:hover {
-  background-color: #0056b3;
+  background-color: #357abd;
 }
 
 .register-error {
-  color: #d9534f;
-  margin-top: 15px;
-  font-size: 14px;
+  color: #dc3545;
+  text-align: center;
+  margin-top: 1rem;
+}
+
+@media (max-width: 480px) {
+  .register-card {
+    padding: 1rem;
+  }
+
+  .categories-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-picture-container {
+    width: 120px;
+    height: 120px;
+  }
+
+  .profile-picture-preview {
+    width: 120px;
+    height: 120px;
+  }
 }

@@ -14,27 +14,31 @@
 }
 
 .statistics-boxes {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
   gap: 20px;
   margin-bottom: 40px;
 }
 
 .stat-box {
-  background: #2a2a3c;
-  padding: 20px 30px;
+  background: #34344a;
+  padding: 20px;
   border-radius: 12px;
-  font-size: 16px;
-  min-width: 200px;
   text-align: center;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-  transition: 0.3s;
+  transition: transform 0.3s ease, background-color 0.3s ease;
 }
 
 .stat-box:hover {
-  background: #34344a;
-  transform: translateY(-3px);
+  transform: translateY(-5px);
+  background: #3a3a52;
+}
+
+.stat-box strong {
+  display: block;
+  font-size: 24px;
+  margin-top: 10px;
+  color: #4a90e2;
 }
 
 .statistics-charts {
@@ -80,4 +84,50 @@
   text-align: center;
   margin-bottom: 20px;
   font-size: 20px;
+}
+
+.active-volunteers-section {
+  background: #2a2a3c;
+  padding: 20px;
+  border-radius: 12px;
+  margin: 20px 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.active-volunteers-section h2 {
+  color: #fff;
+  font-size: 24px;
+  margin-bottom: 20px;
+  text-align: center;
+}
+
+.active-volunteers-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+  padding: 10px;
+}
+
+.active-volunteer-card {
+  background: #34344a;
+  padding: 15px;
+  border-radius: 8px;
+  transition: transform 0.2s ease;
+}
+
+.active-volunteer-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.active-volunteer-card h3 {
+  color: #4a90e2;
+  margin-bottom: 10px;
+  font-size: 18px;
+}
+
+.active-volunteer-card p {
+  color: #fff;
+  margin: 5px 0;
+  font-size: 14px;
 }

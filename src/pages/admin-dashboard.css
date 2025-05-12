@@ -86,41 +86,75 @@
 }
 
 .volunteer-list {
-  display: grid;
-  gap: 20px;
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .volunteer-item {
   display: flex;
-  background: white;
-  border-radius: 10px;
+  align-items: flex-start;
   padding: 20px;
-  align-items: center;
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  background: white;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
 }
 
-.volunteer-img {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
+.volunteer-item:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.volunteer-image-container {
+  position: relative;
+  min-width: 100px;
   margin-right: 20px;
 }
 
+.volunteer-img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #4a90e2;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  transition: transform 0.2s ease;
+}
+
+.volunteer-img:hover {
+  transform: scale(1.05);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
 .volunteer-details {
-  flex-grow: 1;
+  flex: 1;
+}
+
+.volunteer-details p {
+  margin: 5px 0;
+  color: #333;
+  font-size: 14px;
+}
+
+.volunteer-details strong {
+  color: #555;
+  margin-right: 5px;
 }
 
 .delete-btn {
-  background-color: #e74c3c;
+  padding: 8px 16px;
+  background-color: #dc3545;
   color: white;
   border: none;
-  padding: 8px 12px;
-  border-radius: 6px;
+  border-radius: 4px;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
 
 .delete-btn:hover {
-  background-color: #c0392b;
+  background-color: #c82333;
 }
 
 /* Assigned Shifts */
@@ -151,4 +185,133 @@
 
 .cancel-btn:hover {
   background-color: #d35400;
+}
+
+/* Shifts Section */
+.shifts-section {
+  padding: 20px;
+}
+
+.create-shift-form {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.create-shift-form h2 {
+  margin-bottom: 20px;
+  color: #333;
+}
+
+.create-shift-form form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+}
+
+.create-shift-form input,
+.create-shift-form textarea {
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+}
+
+.create-shift-form textarea {
+  grid-column: 1 / -1;
+  min-height: 100px;
+  resize: vertical;
+}
+
+.create-shift-form button {
+  grid-column: 1 / -1;
+  padding: 12px;
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-shift-form button:hover {
+  background-color: #357abd;
+}
+
+.shifts-list {
+  display: grid;
+  gap: 20px;
+}
+
+.shift-item {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+}
+
+.shift-details h3 {
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.shift-details p {
+  margin: 5px 0;
+  color: #666;
+}
+
+.shift-volunteers {
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid #eee;
+}
+
+.shift-volunteers h4 {
+  color: #333;
+  margin-bottom: 15px;
+}
+
+.assigned-volunteer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #f5f5f5;
+}
+
+.assigned-volunteer label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+}
+
+.shift-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.shift-actions button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.shift-actions button:first-child {
+  background-color: #4a90e2;
+  color: white;
+}
+
+.shift-actions button:last-child {
+  background-color: #dc3545;
+  color: white;
+}
+
+.shift-actions button:hover {
+  opacity: 0.9;
 }

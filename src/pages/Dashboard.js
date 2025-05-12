@@ -64,7 +64,7 @@ const handleRemoveCategory = (category) => {
 
         // Fetch available shifts
         //const response = await fetch('http://localhost:5000/api/shifts', {
-        const response = await fetch('https://react-volunteer-management-system-backend.vercel.app/api/shifts', {
+        const response = await fetch('http://localhost:5000/api/shifts', {
           headers: {
             Authorization: `Bearer ${token}`,  // Include the token in the Authorization header
           },
@@ -93,7 +93,7 @@ const handleRemoveCategory = (category) => {
       }
 
       //const response = await fetch(`http://localhost:5000/api/shifts/apply`, {
-      const response = await fetch(`https://react-volunteer-management-system-backend.vercel.app/api/shifts/apply`, {
+      const response = await fetch(`http://localhost:5000/api/shifts/apply`, {
           method: 'POST',
         headers: { 
           'Content-Type': 'application/json',
