@@ -1,16 +1,16 @@
-.upcoming-events-section {
-  padding: 60px 20px;
-  background-color: #f8f9fa;
+.upcoming-events-container {
+  padding: 40px 20px;
+  background: #f8f9fa;
 }
 
-.upcoming-events-section h2 {
+.upcoming-events-container h2 {
   text-align: center;
-  color: #333;
+  color: #2c3e50;
+  margin-bottom: 30px;
   font-size: 2.5rem;
-  margin-bottom: 40px;
 }
 
-.upcoming-events-grid {
+.events-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   gap: 30px;
@@ -18,15 +18,15 @@
   margin: 0 auto;
 }
 
-.upcoming-event-card {
+.event-card {
   background: white;
   border-radius: 10px;
   overflow: hidden;
-  box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease;
 }
 
-.upcoming-event-card:hover {
+.event-card:hover {
   transform: translateY(-5px);
 }
 
@@ -42,89 +42,62 @@
   object-fit: cover;
 }
 
-.event-details {
+.event-content {
   padding: 20px;
 }
 
-.event-details h3 {
-  color: #333;
-  font-size: 1.4rem;
-  margin-bottom: 10px;
+.event-content h3 {
+  color: #2c3e50;
+  margin: 0 0 10px 0;
+  font-size: 1.5rem;
 }
 
 .event-date {
-  color: #666;
-  font-size: 0.9rem;
+  color: #e74c3c;
+  font-weight: 600;
   margin-bottom: 10px;
 }
 
 .event-location {
-  color: #4CAF50;
-  font-weight: 600;
+  color: #7f8c8d;
   margin-bottom: 10px;
 }
 
 .event-description {
-  color: #666;
-  margin-bottom: 20px;
+  color: #34495e;
+  margin-bottom: 15px;
   line-height: 1.5;
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
 }
 
-.view-more-btn {
-  display: inline-block;
-  padding: 8px 20px;
-  background-color: #4CAF50;
-  color: white;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s;
-}
-
-.view-more-btn:hover {
-  background-color: #45a049;
-}
-
-.see-all-events {
-  display: block;
-  text-align: center;
-  margin-top: 40px;
-  color: #4CAF50;
-  text-decoration: none;
+.event-capacity {
+  color: #27ae60;
   font-weight: 600;
-  font-size: 1.1rem;
-  transition: color 0.3s;
+  margin-top: 10px;
 }
 
-.see-all-events:hover {
-  color: #45a049;
-}
-
-.upcoming-events-loading,
-.upcoming-events-error {
+.events-loading,
+.events-error,
+.no-events {
   text-align: center;
   padding: 40px;
-  color: #666;
-  font-size: 1.1rem;
+  font-size: 1.2rem;
+  color: #7f8c8d;
 }
 
-.upcoming-events-error {
-  color: #dc3545;
+.events-error {
+  color: #e74c3c;
 }
 
 @media (max-width: 768px) {
-  .upcoming-events-section {
-    padding: 40px 20px;
-  }
-
-  .upcoming-events-section h2 {
-    font-size: 2rem;
-  }
-
-  .upcoming-events-grid {
+  .events-grid {
     grid-template-columns: 1fr;
+  }
+  
+  .upcoming-events-container {
+    padding: 20px 10px;
+  }
+  
+  .upcoming-events-container h2 {
+    font-size: 2rem;
   }
 } 

@@ -1,68 +1,64 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { Link } from 'react-router-dom';
 import './UpcomingEvents.css';
-
-const API_URL = 'http://localhost:5000/api';
 
 const UpcomingEvents = () => {
   const [events, setEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
+  const [error, setError] = useState(null);
 
   useEffect(() => {
-    const fetchUpcomingEvents = async () => {
+    const fetchEvents = async () => {
       try {
-        const response = await axios.get(`${API_URL}/events/upcoming`);
+        const response = await axios.get('http://localhost:5000/api/events');
         setEvents(response.data);
         setLoading(false);
       } catch (err) {
-        setError('Error fetching upcoming events');
+        setError('Failed to fetch upcoming events');
         setLoading(false);
       }
     };
 
-    fetchUpcomingEvents();
+    fetchEvents();
   }, []);
 
-  if (loading) return <div className="upcoming-events-loading">Loading events...</div>;
-  if (error) return <div className="upcoming-events-error">{error}</div>;
-  if (events.length === 0) return null;
+  if (loading) return <div className="events-loading">Loading events...</div>;
+  if (error) return <div className="events-error">{error}</div>;
+  if (events.length === 0) return <div className="no-events">No upcoming events</div>;
 
   return (
-    <section className="upcoming-events-section">
+    <div className="upcoming-events-container">
       <h2>Upcoming Events</h2>
-      <div className="upcoming-events-grid">
+      <div className="events-grid">
         {events.map((event) => (
-          <div key={event._id} className="upcoming-event-card">
+          <div key={event._id} className="event-card">
             {event.imageUrl && (
               <div className="event-image">
                 <img src={event.imageUrl} alt={event.title} />
               </div>
             )}
-            <div className="event-details">
+            <div className="event-content">
               <h3>{event.title}</h3>
               <p className="event-date">
-                {new Date(event.date).toLocaleDateString(undefined, {
+                {new Date(event.date).toLocaleDateString('en-US', {
                   weekday: 'long',
                   year: 'numeric',
                   month: 'long',
-                  day: 'numeric'
+                  day: 'numeric',
                 })}
               </p>
               <p className="event-location">{event.location}</p>
               <p className="event-description">{event.description}</p>
-              <Link to="/events" className="view-more-btn">
-                View Details
-              </Link>
+              {event.capacity > 0 && (
+                <p className="event-capacity">
+                  Spots available: {event.capacity - (event.registeredVolunteers?.length || 0)}
+                </p>
+              )}
             </div>
           </div>
         ))}
       </div>
-      <Link to="/events" className="see-all-events">
-        See All Events →
-      </Link>
-    </section>
+    </div>
   );
 };
 
