@@ -1,162 +1,184 @@
-.donation-page {
-    min-height: 100vh;
-    background-color: #f0f4f8;
+/* dashboard.css */
+
+/* Global Styles */
+.dashboard-page {
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f4f7fa;
+  min-height: 100vh;
+  padding: 40px;
+  color: #333;
 }
 
-.donation-section {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 60px 20px;
-    position: relative;
-    background-color: #f0f4f8;
-}
-  
-.donation-overlay {
-    background-color: rgba(255, 255, 255, 0.95);
-    padding: 40px;
-    border-radius: 16px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-    max-width: 600px;
-    width: 100%;
-}
-  
-.donation-card {
-    text-align: center;
-}
-  
-.donation-title {
-    font-size: 32px;
-    margin-bottom: 20px;
-    font-weight: 700;
-    color: #222;
-}
-  
-.donation-text {
-    font-size: 16px;
-    color: #555;
-    margin-bottom: 30px;
-    line-height: 1.6;
-}
-  
-.donation-form {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    text-align: left;
-}
-  
-.donation-form label {
-    font-weight: 600;
-    font-size: 14px;
-    color: #333;
-    margin-bottom: 5px;
-}
-  
-.donation-form input,
-.donation-form select,
-.donation-form textarea {
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    font-size: 15px;
-    transition: border-color 0.3s ease;
+.dashboard-title {
+  font-size: 32px;
+  font-weight: 600;
+  text-align: center;
+  margin-bottom: 30px;
 }
 
-.donation-form input:focus,
-.donation-form select:focus,
-.donation-form textarea:focus {
-    outline: none;
-    border-color: #28a745;
-    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+.dashboard-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 30px;
+  justify-content: space-between;
 }
 
-.donation-form textarea {
-    resize: vertical;
-    min-height: 100px;
+/* Profile Section */
+.profile-section {
+  flex: 1 1 300px;
+  background-color: #fff;
+  border-radius: 12px;
+  padding: 20px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.donation-form select {
-    background-color: white;
-    cursor: pointer;
-}
-  
-.donate-btn {
-    margin-top: 10px;
-    padding: 14px;
-    background-color: #28a745;
-    border: none;
-    color: #fff;
-    font-size: 16px;
-    border-radius: 8px;
-    cursor: pointer;
-    transition: all 0.3s ease;
-}
-  
-.donate-btn:hover {
-    background-color: #218838;
-    transform: translateY(-1px);
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
 }
 
-.donate-btn:disabled {
-    background-color: #6c757d;
-    cursor: not-allowed;
-    transform: none;
-}
-  
-.note {
-    margin-top: 20px;
-    font-size: 13px;
-    color: #777;
-    line-height: 1.5;
+.logout-btn {
+  background-color: #e74c3c;
+  color: #fff;
+  padding: 8px 14px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.3s ease;
 }
 
-.error-message {
-    background-color: #fff3f3;
-    color: #dc3545;
-    padding: 12px;
-    border-radius: 8px;
-    margin-bottom: 20px;
-    border: 1px solid #ffcdd2;
-    text-align: left;
+.logout-btn:hover {
+  background-color: #c0392b;
 }
 
-.stripe-element {
-    padding: 12px 16px;
-    border-radius: 8px;
-    border: 1px solid #ccc;
-    background: white;
-    margin-bottom: 20px;
+.profile-picture-section input {
+  margin-bottom: 10px;
 }
 
-.stripe-element.focused {
-    border-color: #28a745;
-    box-shadow: 0 0 0 2px rgba(40, 167, 69, 0.2);
+.profile-picture-preview img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 10px;
 }
 
-.stats-section {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 40px 20px;
+/* Assigned, Available Shifts */
+.assigned-shifts,
+.available-shifts {
+  flex: 1 1 600px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
+.assigned-shifts h2,
+.available-shifts h2 {
+  margin-bottom: 20px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+/* Available Shifts Section */
+.available-shifts {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 30px;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Shift Cards Layout */
+.shift-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.shift-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.shift-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.shift-details {
+  margin-bottom: 20px;
+}
+
+.shift-task {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #27ae60;
+}
+
+.shift-details p {
+  font-size: 1rem;
+  margin: 8px 0;
+  color: #555;
+}
+
+/* Apply Button */
+.apply-btn {
+  padding: 12px;
+  background-color: #3498db;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.apply-btn:hover {
+  background-color: #2980b9;
+}
+
+.apply-btn:disabled {
+  background-color: #b2bec3;
+  cursor: not-allowed;
+}
+
+/* Responsive Design */
 @media (max-width: 768px) {
-    .donation-overlay {
-        padding: 20px;
-    }
-    
-    .donation-title {
-        font-size: 24px;
-    }
-    
-    .donation-form input,
-    .donation-form select,
-    .donation-form textarea {
-        font-size: 14px;
-    }
-
-    .stats-section {
-        padding: 20px;
-    }
-}
+  .dashboard-container {
+    flex-direction: column;
+  }
   
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .shift-cards-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .shift-card {
+    padding: 15px;
+  }
+
+  .apply-btn {
+    font-size: 1rem;
+  }
+}

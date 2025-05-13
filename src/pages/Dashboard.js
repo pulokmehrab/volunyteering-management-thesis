@@ -1,113 +1,58 @@
 import React, { useState, useEffect } from 'react';
-import './dashboard.css';
+import axios from 'axios';
+import './dashboard.css';  // Ensure this CSS file is correctly imported
+
+const API_URL = 'http://localhost:5000/api';
 
 const Dashboard = () => {
-  const [shifts, setShifts] = useState([]);
-  const [appliedShifts, setAppliedShifts] = useState([]);
-  
-  // Assigned shifts with added shifts for testing
-  const [assignedShifts, setAssignedShifts] = useState([
-    { id: 1, date: '2024-10-15', time: '09:00-12:00', location: 'Frauenbadi', task: 'Service' },
-    { id: 2, date: '2024-10-16', time: '13:00-17:00', location: 'Frauenbadi', task: 'Bar Logistics' },
-    { id: 3, date: '2024-10-17', time: '10:00-14:00', location: 'Shop', task: 'Tambola-Tickets' },
-    { id: 4, date: '2024-10-18', time: '14:00-18:00', location: 'Kongresshaus', task: 'Cloakroam' }
-  ]);
-
-  // Mocked completed shifts for testing
-  const [completedShifts, setCompletedShifts] = useState([
-    { id: 1, date: '2024-10-10', time: '09:00-12:00', location: 'Kongresshaus', task: 'Cinemasupport', rating: 0, comment: '' },
-    { id: 2, date: '2024-10-12', time: '14:00-17:00', location: 'Arena 4 Sihlcity', task: 'Ushering Guests', rating: 0, comment: '' }
-  ]);
-
-
-// Predefined categories for volunteers
-const predefinedCategories = [
-  { name: 'Ticketing', color: '#ff6347' },
-  { name: 'Accreditation', color: '#4682b4' },
-  { name: 'Theatre Support & Audience Award', color: '#ffb6c1' },
-  { name: 'Bar/Service', color: '#32cd32' },
-  { name: 'Shop', color: '#ffa500' },
-  { name: 'Information Stand', color: '#9370db' },
-  { name: 'Office Support', color: '#1e90ff' },
-  { name: 'Assembling/Dissembling', color: '#ff4500' },
-  { name: 'Technical Support', color: '#2e8b57' },
-  { name: 'Airport Welcome', color: '#da70d6' },
-  { name: 'Runner', color: '#8b0000' }
-];
-
-const [selectedCategories, setSelectedCategories] = useState([]);
-
-// Add category
-const handleAddCategory = (category) => {
-  if (!selectedCategories.includes(category)) {
-    setSelectedCategories([...selectedCategories, category]);
-  }
-};
-
-// Remove category
-const handleRemoveCategory = (category) => {
-  setSelectedCategories(selectedCategories.filter((cat) => cat !== category));
-};
-
-
-
-  const [profilePicture, setProfilePicture] = useState(null);  // For profile picture upload
+  const [shifts, setShifts] = useState([]);  // Initialize as empty array
+  const [appliedShifts, setAppliedShifts] = useState([]);  // Initialize as empty array
+  const [assignedShifts, setAssignedShifts] = useState([]);  // Initialize as empty array
+  const [userData, setUserData] = useState({ name: '', totalHours: 0, upcomingShifts: [] });
+  const [profilePicture, setProfilePicture] = useState(null);
 
   useEffect(() => {
-    const fetchShifts = async () => {
+    const fetchData = async () => {
       try {
-        const token = localStorage.getItem('token');  // Retrieve token from localStorage
+        const token = localStorage.getItem('token');
+        if (!token) throw new Error('No token found, please log in');
 
-        if (!token) {
-          throw new Error('No token found, please log in');
-        }
+        // Fetch user data
+        const userResponse = await axios.get(`${API_URL}/users/profile`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setUserData(userResponse.data);
+
+        // Fetch assigned shifts (specific to volunteer)
+        const shiftsResponse = await axios.get(`${API_URL}/shifts/volunteer/${userResponse.data._id}`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setAssignedShifts(shiftsResponse.data);
 
         // Fetch available shifts
-        //const response = await fetch('http://localhost:5000/api/shifts', {
-        const response = await fetch('http://localhost:5000/api/shifts', {
-          headers: {
-            Authorization: `Bearer ${token}`,  // Include the token in the Authorization header
-          },
+        const availableShiftsResponse = await axios.get(`${API_URL}/shifts`, {
+          headers: { Authorization: `Bearer ${token}` }
         });
-
-        if (!response.ok) {
-          throw new Error('Failed to fetch shifts');
-        }
-
-        const data = await response.json();
-        setShifts(data);  // Set the fetched data to shifts state
+        setShifts(availableShiftsResponse.data);
+        
       } catch (error) {
-        console.error('Error fetching shifts:', error);  // Log errors
+        console.error('Error fetching data:', error);
       }
     };
 
-    fetchShifts();  // Fetch shifts on component mount
+    fetchData();
   }, []);
 
   const applyForShift = async (shiftId) => {
     try {
-      const token = localStorage.getItem('token');  // Retrieve token from localStorage
-
-      if (!token) {
-        throw new Error('No token found, please log in');
-      }
-
-      //const response = await fetch(`http://localhost:5000/api/shifts/apply`, {
-      const response = await fetch(`http://localhost:5000/api/shifts/apply`, {
-          method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,  // Include the token in the Authorization header
-        },
-        body: JSON.stringify({ shiftId })  // Send shiftId in the request body
+      const token = localStorage.getItem('token');
+      const response = await axios.post(`${API_URL}/shifts/apply/${shiftId}`, {}, {
+        headers: { Authorization: `Bearer ${token}` }
       });
 
-      const data = await response.json();
-      if (response.ok) {
+      if (response.data.message === 'Successfully applied for shift') {
         setAppliedShifts([...appliedShifts, shiftId]);
         alert('Shift application successful!');
-      } else {
-        alert(data.message);
       }
     } catch (error) {
       console.error('Error applying for shift:', error);
@@ -115,217 +60,73 @@ const handleRemoveCategory = (category) => {
     }
   };
 
-  const cancelShift = (shiftId) => {
-    setAssignedShifts(assignedShifts.filter(shift => shift.id !== shiftId));  // Remove shift from assigned list
-    alert('Shift canceled successfully');
-  };
-
-  const handleLogout = () => {
-    localStorage.removeItem('token');  // Clear token on logout
-    window.location.href = '/login';  // Redirect to login page
-  };
-
-  // Handle profile picture upload
-  const handleProfilePictureUpload = (e) => {
-    const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setProfilePicture(e.target.result);  // Set the uploaded image as base64 URL
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-
-  const handleStarClick = (shiftId, newRating) => {
-    setCompletedShifts(prevShifts =>
-      prevShifts.map(shift =>
-        shift.id === shiftId ? { ...shift, rating: newRating } : shift
-      )
-    );
-  };
-
-  const handleCommentChange = (shiftId, newComment) => {
-    setCompletedShifts(prevShifts =>
-      prevShifts.map(shift =>
-        shift.id === shiftId ? { ...shift, comment: newComment } : shift
-      )
-    );
-  };
-
-  const handleSubmitFeedback = (shiftId) => {
-    const shift = completedShifts.find(shift => shift.id === shiftId);
-    if (shift) {
-      console.log('Submitted Feedback for Shift:', shiftId);
-      console.log('Rating:', shift.rating);
-      console.log('Comment:', shift.comment);
-      // API call logic to submit feedback for the completed shift
-    }
-  };
-
   return (
     <div className="dashboard-page">
       <h1 className="dashboard-title">Volunteer Dashboard</h1>
       <div className="dashboard-container">
-
+        
         {/* Profile Section */}
         <div className="profile-section">
-          <div className="profile-header">
-            <h2>My Profile</h2>
-            <button className="logout-btn" onClick={handleLogout}>Logout</button> {/* Logout Button */}
-          </div>
-
-          {/* Profile Picture Upload */}
+          <h2>My Profile</h2>
+          <button className="logout-btn" onClick={() => { localStorage.removeItem('token'); window.location.href = '/login'; }}>Logout</button>
           <div className="profile-picture-section">
             <h3>Profile Picture</h3>
-            <input type="file" accept="image/*" onChange={handleProfilePictureUpload} />
-            {profilePicture && (
-              <div className="profile-picture-preview">
-                <img src={profilePicture} alt="Profile" />
-              </div>
-            )}
+            <input type="file" accept="image/*" onChange={(e) => setProfilePicture(e.target.files[0])} />
+            {profilePicture && <img src={URL.createObjectURL(profilePicture)} alt="Profile" />}
           </div>
-            
-
-          <p><strong>Name:</strong> Ajita Gupta</p>
-          <p><strong>Total Hours Volunteered:</strong> 12 hours</p>
+          <p><strong>Name:</strong> {userData.name}</p>
+          <p><strong>Total Hours Volunteered:</strong> {userData.totalHours} hours</p>
           <p><strong>Upcoming Shifts:</strong></p>
           <ul>
-            <li>
-              <strong>Date:</strong> 2024-10-21<br />
-              <strong>Location:</strong> Frauenbadi<br />
-              <strong>Location Manager:</strong> John Doe<br />
-              <strong>Contact Number:</strong> +41 79 123 45 67
-            </li>
+            {userData.upcomingShifts && userData.upcomingShifts.length > 0 ? userData.upcomingShifts.map((shift) => (
+              <li key={shift.id}>
+                <strong>Date:</strong> {shift.date}<br />
+                <strong>Location:</strong> {shift.location}<br />
+                <strong>Location Manager:</strong> {shift.manager}<br />
+                <strong>Contact:</strong> {shift.contact}
+              </li>
+            )) : <p>No upcoming shifts</p>}
           </ul>
-
-
-          {/* Categories Section */}
-          <div className="categories-section">
-            <h3>Categories</h3>
-            <ul className="categories-list">
-              {selectedCategories.map((category, index) => (
-                <li key={index} className="category-item" style={{ backgroundColor: category.color }}>
-                  {category.name}
-                  <button className="delete-category-btn" onClick={() => handleRemoveCategory(category)}>Delete</button>
-                </li>
-              ))}
-            </ul>
-
-
-             {/* Add New Category */}
-             <div className="add-category">
-              <select onChange={(e) => handleAddCategory(predefinedCategories.find(cat => cat.name === e.target.value))}>
-                <option value="">Select a category</option>
-                {predefinedCategories.map((category, index) => (
-                  <option key={index} value={category.name}>{category.name}</option>
-                ))}
-              </select>
-            </div>
-          </div>
-
         </div>
 
-        {/* Assigned Shifts Section */}
+        {/* Assigned Shifts */}
         <div className="assigned-shifts">
           <h2>Assigned Shifts</h2>
           <ul>
-            {Array.isArray(assignedShifts) && assignedShifts.length > 0 ? (
-              assignedShifts.map((shift) => (
-                <li key={shift.id} className="shift-item-volunteer">
-                  <div className="shift-details">
-                    <strong>Date:</strong> {shift.date}, <strong>Time:</strong> {shift.time}, <strong>Location:</strong> {shift.location}, <strong>Task:</strong> {shift.task}
-                  </div>
-                  <button
-                    onClick={() => cancelShift(shift.id)}
-                    className="cancel-btn"
-                  >
-                    Cancel
-                  </button>
-                </li>
-              ))
-            ) : (
-              <p>No assigned shifts available</p>
-            )}
+            {assignedShifts && assignedShifts.length > 0 ? assignedShifts.map((shift) => (
+              <li key={shift._id}>
+                <div className="shift-details">
+                  <strong>Date:</strong> {shift.date}, <strong>Time:</strong> {shift.time}, <strong>Location:</strong> {shift.location}, <strong>Task:</strong> {shift.task}
+                </div>
+              </li>
+            )) : <p>No assigned shifts available</p>}
           </ul>
         </div>
 
-        {/* Available Shifts Section */}
-        <div className="shift-list">
-          <h2>Available Shifts</h2>
-          <ul>
-            {Array.isArray(shifts) && shifts.length > 0 ? (
-              shifts.map((shift) => (
-                <li key={shift.id} className="shift-item-volunteer">
-                  <div className="shift-details">
-                    <strong>Date:</strong> {shift.date}, <strong>Time:</strong> {shift.time}, <strong>Location:</strong> {shift.location}, <strong>Task:</strong> {shift.task}
-                  </div>
-                  <button
-                    disabled={appliedShifts.includes(shift.id)}
-                    onClick={() => applyForShift(shift.id)}
-                    className="apply-btn"
-                  >
-                    {appliedShifts.includes(shift.id) ? 'Applied' : 'Apply'}
-                  </button>
-                </li>
-              ))
-            ) : (
-              <p>No shifts available</p>
-            )}
-          </ul>
+        {/* Available Shifts */}
+        <div className="available-shifts">
+  <h2 className="section-title">Available Shifts</h2>
+  <div className="shift-cards-container">
+    {shifts && shifts.length > 0 ? shifts.map((shift) => (
+      <div key={shift._id} className="shift-card">
+        <div className="shift-details">
+          <h3 className="shift-task">{shift.task}</h3>
+          <p><strong>Date:</strong> {shift.date}</p>
+          <p><strong>Time:</strong> {shift.time}</p>
+          <p><strong>Location:</strong> {shift.location}</p>
         </div>
+        <button 
+          className="apply-btn" 
+          onClick={() => applyForShift(shift._id)} 
+          disabled={appliedShifts.includes(shift._id)}
+        >
+          {appliedShifts.includes(shift._id) ? 'Applied' : 'Apply'}
+        </button>
+      </div>
+    )) : <p>No available shifts</p>}
+  </div>
+</div>
 
-        {/* Completed Shifts Section */}
-        <div className="completed-shifts">
-          <h2>Completed Shifts</h2>
-          <ul>
-            {completedShifts.length > 0 ? (
-              completedShifts.map((shift) => (
-                <li key={shift.id} className="completed-shift-item">
-                  <div className="shift-details">
-                    <strong>Date:</strong> {shift.date}, <strong>Time:</strong> {shift.time}, <strong>Location:</strong> {shift.location}, <strong>Task:</strong> {shift.task}
-                  </div>
-
-                  {/* Star Rating Section */}
-                  <div className="rating-section">
-                    <label>Rate this shift: </label>
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <span
-                        key={star}
-                        className={`star ${shift.rating >= star ? 'selected' : ''}`}
-                        onClick={() => handleStarClick(shift.id, star)}
-                      >
-                        ★
-                      </span>
-                    ))}
-                  </div>
-
-                  {/* Comment Section */}
-                  <div className="comment-section">
-                    <label>Leave a comment:</label>
-                    <br></br>
-                    <textarea
-                      value={shift.comment}
-                      onChange={(e) => handleCommentChange(shift.id, e.target.value)}
-                      rows="3"
-                      placeholder="Your feedback here..."
-                    />
-                  </div>
-
-                  {/* Submit Button */}
-                  <button
-                    onClick={() => handleSubmitFeedback(shift.id)}
-                    className="submit-feedback-btn"
-                  >
-                    Submit Feedback
-                  </button>
-                </li>
-              ))
-            ) : (
-              <p>No completed shifts available for feedback.</p>
-            )}
-          </ul>
-        </div>
       </div>
     </div>
   );
