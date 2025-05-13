@@ -9,7 +9,7 @@ router.get('/', verifyToken, async (req, res) => {
   try {
     const { status, date, location } = req.query;
     let query = {};
-    
+
     if (status) query.status = status;
     if (date) query.date = date;
     if (location) query.location = location;
@@ -73,6 +73,48 @@ router.post('/apply/:shiftId', verifyToken, async (req, res) => {
   }
 });
 
+// Mark shift as completed (volunteer action)
+router.put('/:shiftId/complete', verifyToken, async (req, res) => {
+  try {
+    const shift = await Shift.findById(req.params.shiftId);
+    if (!shift) {
+      return res.status(404).json({ message: 'Shift not found' });
+    }
+
+    // Check if the user is assigned to this shift
+    const user = await User.findById(req.user.userId);
+    if (!shift.assignedUsers.includes(user._id)) {
+      return res.status(403).json({ message: 'You are not assigned to this shift' });
+    }
+
+    // Calculate hours worked for the shift (assuming 4 hours for simplicity)
+    const hoursWorked = 4; // This can be dynamic based on shift duration or can be set in shift model
+
+    // Update the shift status to completed
+    shift.status = 'completed';
+
+    // Find the attendance record for this user and mark them as attended
+    const attendanceRecord = shift.attendance.find(a => a.user.toString() === user._id);
+    if (attendanceRecord) {
+      attendanceRecord.attended = true;
+    }
+
+    // Update volunteer's total hours
+    user.hours += hoursWorked; // Add worked hours to the volunteer's total hours
+    await user.save();
+    await shift.save();
+
+    res.json({
+      message: 'Shift completed successfully',
+      user,
+      shift
+    });
+  } catch (error) {
+    res.status(500).json({ message: 'Server error' });
+  }
+});
+
+
 // Assign volunteers to a shift (admin only)
 router.post('/:shiftId/assign', verifyToken, async (req, res) => {
   try {
@@ -109,7 +151,7 @@ router.put('/:shiftId/attendance', verifyToken, async (req, res) => {
       return res.status(403).json({ message: 'Not authorized' });
     }
 
-    const { userId, attended } = req.body;
+    const { userId, attended, startTime, endTime } = req.body;
     const shift = await Shift.findById(req.params.shiftId);
 
     if (!shift) {
@@ -120,13 +162,15 @@ router.put('/:shiftId/attendance', verifyToken, async (req, res) => {
     const attendanceRecord = shift.attendance.find(a => a.user.toString() === userId);
     if (attendanceRecord) {
       attendanceRecord.attended = attended;
+      attendanceRecord.startTime = startTime;
+      attendanceRecord.endTime = endTime;
     }
 
     // If attended, update volunteer's hours
     if (attended) {
       const user = await User.findById(userId);
       if (user) {
-        user.hours = (user.hours || 0) + 4; // Assuming 4 hours per shift
+        user.hours = (user.hours || 0) + (new Date(endTime) - new Date(startTime)) / (1000 * 60 * 60); // Calculate hours worked
         await user.save();
       }
     }
@@ -176,4 +220,3 @@ router.get('/volunteer/:userId', verifyToken, async (req, res) => {
 });
 
 module.exports = router;
-// kuch to kiya 

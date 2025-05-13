@@ -1,5 +1,6 @@
 /* dashboard.css */
 
+/* Global Styles */
 .dashboard-page {
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   background-color: #f4f7fa;
@@ -31,25 +32,10 @@
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
 }
 
-.profile-header {
+.profile-picture-section {
   display: flex;
-  justify-content: space-between;
+  flex-direction: column;
   align-items: center;
-  margin-bottom: 20px;
-}
-
-.logout-btn {
-  background-color: #e74c3c;
-  color: #fff;
-  padding: 8px 14px;
-  border: none;
-  border-radius: 6px;
-  cursor: pointer;
-  transition: background 0.3s ease;
-}
-
-.logout-btn:hover {
-  background-color: #c0392b;
 }
 
 .profile-picture-section input {
@@ -64,51 +50,9 @@
   margin-bottom: 10px;
 }
 
-/* Categories */
-.categories-section {
-  margin-top: 20px;
-}
-
-.categories-list {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 10px;
-}
-
-.category-item {
-  padding: 6px 10px;
-  border-radius: 6px;
-  color: #fff;
-  font-size: 14px;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.delete-category-btn {
-  background: rgba(0, 0, 0, 0.2);
-  border: none;
-  color: white;
-  padding: 2px 6px;
-  cursor: pointer;
-  border-radius: 4px;
-}
-
-/* Add Category */
-.add-category select {
-  padding: 8px 12px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-}
-
-/* Assigned, Available, Completed Shifts */
+/* Assigned, Available Shifts */
 .assigned-shifts,
-.shift-list,
-.completed-shifts {
+.available-shifts {
   flex: 1 1 600px;
   background-color: #fff;
   padding: 20px;
@@ -117,78 +61,109 @@
 }
 
 .assigned-shifts h2,
-.shift-list h2,
-.completed-shifts h2 {
+.available-shifts h2 {
   margin-bottom: 20px;
   font-size: 20px;
   font-weight: 600;
 }
 
-.shift-item-volunteer,
-.completed-shift-item {
-  background-color: #f9f9f9;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 10px;
-  border: 1px solid #ddd;
+/* Available Shifts Section */
+.available-shifts {
+  width: 100%;
+  max-width: 1200px;
+  margin-top: 30px;
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  font-weight: bold;
+  margin-bottom: 30px;
+  color: #333;
+}
+
+/* Shift Cards Layout */
+.shift-cards-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+  padding: 0 10px;
+}
+
+.shift-card {
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  padding: 20px;
   display: flex;
-  justify-content: space-between;
   flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.shift-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .shift-details {
-  margin-bottom: 10px;
-  font-size: 14px;
+  margin-bottom: 20px;
 }
 
-.cancel-btn,
-.apply-btn,
-.submit-feedback-btn {
-  align-self: flex-end;
-  padding: 8px 12px;
-  border: none;
+.shift-task {
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+  color: #27ae60;
+}
+
+.shift-details p {
+  font-size: 1rem;
+  margin: 8px 0;
+  color: #555;
+}
+
+/* Apply Button */
+.apply-btn {
+  padding: 12px;
   background-color: #3498db;
   color: #fff;
+  border: none;
   border-radius: 6px;
+  font-size: 1.1rem;
   cursor: pointer;
-  font-size: 14px;
+  transition: background-color 0.3s ease;
 }
 
-.cancel-btn:hover,
-.apply-btn:hover,
-.submit-feedback-btn:hover {
+.apply-btn:hover {
   background-color: #2980b9;
 }
 
 .apply-btn:disabled {
-  background-color: #aaa;
+  background-color: #b2bec3;
   cursor: not-allowed;
 }
 
-/* Rating Stars */
-.rating-section .star {
-  font-size: 20px;
-  color: #ccc;
-  cursor: pointer;
-  margin-right: 4px;
-}
-
-.rating-section .star.selected {
-  color: #f39c12;
-}
-
-.comment-section textarea {
-  width: 100%;
-  padding: 8px;
-  border-radius: 6px;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  margin-top: 5px;
-}
-
-/* Responsive */
+/* Responsive Design */
 @media (max-width: 768px) {
   .dashboard-container {
     flex-direction: column;
+  }
+
+  .section-title {
+    font-size: 1.5rem;
+  }
+
+  .shift-cards-container {
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  }
+
+  .shift-card {
+    padding: 15px;
+  }
+
+  .apply-btn {
+    font-size: 1rem;
   }
 }

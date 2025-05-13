@@ -3,7 +3,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import './donation.css';
-import donationImage from './img5.jpg'; // Place your image in src/assets/
+import donationImage from './img5.jpg';  // Place your image in src/assets/
 import StripeCardElement from '../components/StripeCardElement';
 import DonationStats from '../components/DonationStats';
 
@@ -16,8 +16,9 @@ const DonationForm = () => {
     name: '',
     email: '',
     message: '',
-    charity: 'General Fund' // Default charity
+    charity: 'General Fund', // Default charity
   });
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [isOrganizer, setIsOrganizer] = useState(false);
@@ -32,7 +33,7 @@ const DonationForm = () => {
         if (!token) return;
 
         const response = await axios.get('http://localhost:5000/api/users/me', {
-          headers: { Authorization: `Bearer ${token}` }
+          headers: { Authorization: `Bearer ${token}` },
         });
         setIsOrganizer(response.data.role === 'organizer');
       } catch (err) {
@@ -45,13 +46,13 @@ const DonationForm = () => {
   const handleInputChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.id]: e.target.value
+      [e.target.id]: e.target.value,
     });
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!stripe || !elements) {
       return;
     }
@@ -61,13 +62,15 @@ const DonationForm = () => {
 
     try {
       // Create payment intent
-      const response = await axios.post('http://localhost:5000/api/donations/create-payment-intent', {
-        amount: parseFloat(formData.amount)
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+      const response = await axios.post(
+        'http://localhost:5000/api/donations/create-payment-intent',
+        { amount: parseFloat(formData.amount) },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
         }
-      });
+      );
 
       const { clientSecret } = response.data;
 
@@ -77,9 +80,9 @@ const DonationForm = () => {
           card: elements.getElement(CardElement),
           billing_details: {
             name: formData.name,
-            email: formData.email
-          }
-        }
+            email: formData.email,
+          },
+        },
       });
 
       if (result.error) {
@@ -87,14 +90,18 @@ const DonationForm = () => {
       }
 
       // Create donation record
-      await axios.post('http://localhost:5000/api/donations', {
-        ...formData,
-        paymentId: result.paymentIntent.id
-      }, {
-        headers: {
-          Authorization: `Bearer ${localStorage.getItem('token')}`
+      await axios.post(
+        'http://localhost:5000/api/donations',
+        {
+          ...formData,
+          paymentId: result.paymentIntent.id,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
         }
-      });
+      );
 
       alert('Thank you for your donation!');
       setFormData({
@@ -102,7 +109,7 @@ const DonationForm = () => {
         name: '',
         email: '',
         message: '',
-        charity: 'General Fund'
+        charity: 'General Fund',
       });
     } catch (err) {
       setError(err.message || 'An error occurred while processing your donation');
@@ -198,8 +205,7 @@ const DonationForm = () => {
             </form>
 
             <p className="note">
-              * All donations are securely processed through Stripe.
-              Your payment information is encrypted and secure.
+              * All donations are securely processed through Stripe. Your payment information is encrypted and secure.
             </p>
           </div>
         </div>
@@ -214,7 +220,6 @@ const DonationForm = () => {
   );
 };
 
-// Wrap the form with Elements provider
 const Donation = () => {
   return (
     <Elements stripe={stripePromise}>
