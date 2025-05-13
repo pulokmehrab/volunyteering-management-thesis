@@ -2,6 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import UpcomingEvents from '../components/UpcomingEvents';
+import ChatBot from '../components/ChatBot';
 import './LandingPage.css';
 
 const LandingPage = () => {
@@ -40,6 +41,8 @@ const LandingPage = () => {
           </div>
         </div>
       </section>
+
+      <ChatBot />
     </div>
   );
 };
