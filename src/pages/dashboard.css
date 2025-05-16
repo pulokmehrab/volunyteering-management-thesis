@@ -8,6 +8,40 @@
   padding: 40px;
   color: #333;
 }
+/* Add styles for the feedback section */
+.feedback-section {
+  margin-top: 20px;
+}
+
+.feedback-textarea {
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  resize: vertical;
+}
+
+.submit-feedback-btn {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 15px;
+  font-size: 14px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-feedback-btn:hover {
+  background-color: #45a049;
+}
+
+.feedback-message {
+  color: green;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
 
 .dashboard-title {
   font-size: 32px;

@@ -1,4 +1,3 @@
-// src/pages/EventsPage.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './Event.css';
@@ -93,49 +92,66 @@ const EventsPage = () => {
         <div className="event-form">
           <h2>Create New Event</h2>
           <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="title"
-              placeholder="Event Title"
-              value={newEvent.title}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="date"
-              name="date"
-              value={newEvent.date}
-              onChange={handleInputChange}
-              required
-            />
-            <input
-              type="text"
-              name="location"
-              placeholder="Location"
-              value={newEvent.location}
-              onChange={handleInputChange}
-              required
-            />
-            <textarea
-              name="description"
-              placeholder="Event Description"
-              value={newEvent.description}
-              onChange={handleInputChange}
-              required
-            />
-            <button type="submit">Create Event</button>
+            <div className="form-group">
+              <label htmlFor="title">Event Title</label>
+              <input
+                type="text"
+                name="title"
+                placeholder="Enter event title"
+                value={newEvent.title}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="date">Event Date</label>
+              <input
+                type="date"
+                name="date"
+                value={newEvent.date}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="location">Location</label>
+              <input
+                type="text"
+                name="location"
+                placeholder="Enter event location"
+                value={newEvent.location}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="description">Event Description</label>
+              <textarea
+                name="description"
+                placeholder="Enter event description"
+                value={newEvent.description}
+                onChange={handleInputChange}
+                required
+              />
+            </div>
+
+            <button type="submit" className="btn-submit">Create Event</button>
           </form>
         </div>
       )}
 
       <div className="events-list">
-        <h2>All Events</h2>
+        <h2>Upcoming Events</h2>
         {events.map(event => (
           <div key={event._id} className="event-card">
             <h3>{event.title}</h3>
             <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
             <p><strong>Location:</strong> {event.location}</p>
             <p>{event.description}</p>
+            <button onClick={() => handleRegister(event._id)} className="btn-register">Register</button>
           </div>
         ))}
       </div>

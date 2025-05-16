@@ -6,6 +6,7 @@ const shiftsRouter = require('./routes/shifts');
 const donationsRouter = require('./routes/donations');
 const eventsRouter = require('./routes/events');
 const usersRouter = require('./routes/users');
+const feedbackRouter = require('./routes/feedback');  // <-- Add this
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use('/api/shifts', shiftsRouter);
 app.use('/api/donations', donationsRouter);
 app.use('/api/events', eventsRouter);
 app.use('/api/users', usersRouter);
+app.use('/api/feedback', feedbackRouter);   // <-- Add this
 
 // Error handling middleware
 app.use((err, req, res, next) => {
@@ -47,4 +49,5 @@ app.listen(PORT, () => {
   console.log('- Donations: /api/donations');
   console.log('- Events: /api/events');
   console.log('- Users: /api/users');
-}); 
+  console.log('- Feedback: /api/feedback');  // Optional: add this for clarity
+});

@@ -3,11 +3,11 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Elements, useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import './donation.css';
-import donationImage from './img5.jpg';  // Place your image in src/assets/
+// import donationImage from './img5.jpg'; // Place your image in src/assets/
 import StripeCardElement from '../components/StripeCardElement';
 import DonationStats from '../components/DonationStats';
 
-// Initialize Stripe outside of component
+// Initialize Stripe outside of the component to optimize performance
 const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PUBLISHABLE_KEY || 'your_publishable_key');
 
 const DonationForm = () => {
@@ -123,7 +123,7 @@ const DonationForm = () => {
       <div
         className="donation-section"
         style={{
-          backgroundImage: `url(${donationImage})`,
+          // backgroundImage: `url(${donationImage})`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat',
@@ -139,61 +139,73 @@ const DonationForm = () => {
             {error && <div className="error-message">{error}</div>}
 
             <form className="donation-form" onSubmit={handleSubmit}>
-              <label htmlFor="amount">Donation Amount ($)</label>
-              <input
-                type="number"
-                id="amount"
-                value={formData.amount}
-                onChange={handleInputChange}
-                placeholder="Enter amount"
-                min="1"
-                required
-              />
+              <div className="form-group">
+                <label htmlFor="amount">Donation Amount ($)</label>
+                <input
+                  type="number"
+                  id="amount"
+                  value={formData.amount}
+                  onChange={handleInputChange}
+                  placeholder="Enter amount"
+                  min="1"
+                  required
+                />
+              </div>
 
-              <label htmlFor="name">Your Name</label>
-              <input
-                type="text"
-                id="name"
-                value={formData.name}
-                onChange={handleInputChange}
-                placeholder="Full name"
-                required
-              />
+              <div className="form-group">
+                <label htmlFor="name">Your Name</label>
+                <input
+                  type="text"
+                  id="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  placeholder="Full name"
+                  required
+                />
+              </div>
 
-              <label htmlFor="email">Email Address</label>
-              <input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder="example@email.com"
-                required
-              />
+              <div className="form-group">
+                <label htmlFor="email">Email Address</label>
+                <input
+                  type="email"
+                  id="email"
+                  value={formData.email}
+                  onChange={handleInputChange}
+                  placeholder="example@email.com"
+                  required
+                />
+              </div>
 
-              <label htmlFor="message">Message (Optional)</label>
-              <textarea
-                id="message"
-                value={formData.message}
-                onChange={handleInputChange}
-                placeholder="Leave a message..."
-                rows="3"
-              />
+              <div className="form-group">
+                <label htmlFor="message">Message (Optional)</label>
+                <textarea
+                  id="message"
+                  value={formData.message}
+                  onChange={handleInputChange}
+                  placeholder="Leave a message..."
+                  rows="3"
+                />
+              </div>
 
-              <label htmlFor="charity">Select Charity</label>
-              <select
-                id="charity"
-                value={formData.charity}
-                onChange={handleInputChange}
-                required
-              >
-                <option value="General Fund">General Fund</option>
-                <option value="Education">Education</option>
-                <option value="Healthcare">Healthcare</option>
-                <option value="Environment">Environment</option>
-              </select>
+              <div className="form-group">
+                <label htmlFor="charity">Select Charity</label>
+                <select
+                  id="charity"
+                  value={formData.charity}
+                  onChange={handleInputChange}
+                  required
+                >
+                  <option value="General Fund">General Fund</option>
+                  <option value="Education">Education</option>
+                  <option value="Healthcare">Healthcare</option>
+                  <option value="Environment">Environment</option>
+                </select>
+              </div>
 
-              <label>Card Details</label>
-              <StripeCardElement />
+              <div className="form-group">
+                <label>Card Details</label>
+                <StripeCardElement />
+              </div>
 
               <button
                 type="submit"

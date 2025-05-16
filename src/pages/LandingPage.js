@@ -4,6 +4,7 @@ import { Link } from 'react-router-dom';
 import UpcomingEvents from '../components/UpcomingEvents';
 import ChatBot from '../components/ChatBot';
 import './LandingPage.css';
+import HomeReview from './HomeReview';
 
 const LandingPage = () => {
   return (
@@ -20,6 +21,8 @@ const LandingPage = () => {
       </section>
 
       <UpcomingEvents />
+
+      <HomeReview />
 
       <section className="features-section">
         <h2>Why Volunteer With Us?</h2>

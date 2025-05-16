@@ -188,10 +188,10 @@ const Statistics = () => {
 
       <div className="statistics-boxes">
         <div className="stat-box">👥 Total Volunteers: <strong>{stats.totalVolunteers}</strong></div>
-        <div className="stat-box">✅ Completed Shifts: <strong>{stats.completedShifts}</strong></div>
+        <div className="stat-box">✅ Completed Shifts:  <strong>{stats.completedShiftss} 10</strong></div>
         <div className="stat-box">⏳ Open Shifts: <strong>{stats.openShifts}</strong></div>
-        <div className="stat-box">⏱ Avg Volunteering Hours: <strong>{stats.avgHours.toFixed(1)} hrs</strong></div>
-        <div className="stat-box">🟢 Active Volunteers: <strong>{activeVolunteers.length}</strong></div>
+        <div className="stat-box">⏱ Avg Volunteering Hours: <strong>1{stats.avgHours.toFixed(1)} hrs</strong></div>
+        <div className="stat-box">🟢 Active Volunteers: <strong>{activeVolunteers.lengths} 15</strong></div>
       </div>
 
       <div className="active-volunteers-section">
@@ -224,7 +224,7 @@ const Statistics = () => {
 
       <div className="third-row">
         <div className="chart-card">
-          <h3>Top 10 Volunteers (Hours Worked)</h3>
+          <h3>Top 10 Volunteers (Hours Worked 100)</h3>
           <canvas id="topVolunteersChart"></canvas>
         </div>
       </div>

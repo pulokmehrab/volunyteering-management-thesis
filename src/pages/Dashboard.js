@@ -5,13 +5,18 @@ import './dashboard.css';
 const API_URL = 'http://localhost:5000/api';
 
 const Dashboard = () => {
-  const [shifts, setShifts] = useState([]);  // Initialize as empty array
-  const [appliedShifts, setAppliedShifts] = useState([]);  // Initialize as empty array
-  const [assignedShifts, setAssignedShifts] = useState([]);  // Initialize as empty array
+  const [shifts, setShifts] = useState([]);
+  const [appliedShifts, setAppliedShifts] = useState([]);
+  const [assignedShifts, setAssignedShifts] = useState([]);
   const [userData, setUserData] = useState({ name: '', totalHours: 0, upcomingShifts: [] });
   const [profilePicture, setProfilePicture] = useState(null);
-  const [isEditing, setIsEditing] = useState(false); // To toggle between edit mode and view mode
+  const [isEditing, setIsEditing] = useState(false);
   const [updatedUserData, setUpdatedUserData] = useState({ name: '', contact: '', email: '' });
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState('');
+  
+  const [feedback, setFeedback] = useState('');  // State to manage feedback text
+  const [feedbackMessage, setFeedbackMessage] = useState('');  // State to store success/failure message
 
   useEffect(() => {
     const fetchData = async () => {
@@ -19,7 +24,8 @@ const Dashboard = () => {
         const token = localStorage.getItem('token');
         if (!token) throw new Error('No token found, please log in');
 
-        // Fetch user data
+        setLoading(true);
+        
         const userResponse = await axios.get(`${API_URL}/users/profile`, {
           headers: { Authorization: `Bearer ${token}` }
         });
@@ -30,20 +36,20 @@ const Dashboard = () => {
           email: userResponse.data.email
         });
 
-        // Fetch assigned shifts (specific to volunteer)
         const shiftsResponse = await axios.get(`${API_URL}/shifts/volunteer/${userResponse.data._id}`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setAssignedShifts(shiftsResponse.data);
 
-        // Fetch available shifts
         const availableShiftsResponse = await axios.get(`${API_URL}/shifts`, {
           headers: { Authorization: `Bearer ${token}` }
         });
         setShifts(availableShiftsResponse.data);
 
+        setLoading(false);
       } catch (error) {
-        console.error('Error fetching data:', error);
+        setError('Error fetching data, please try again.');
+        setLoading(false);
       }
     };
 
@@ -53,6 +59,28 @@ const Dashboard = () => {
   const handleInputChange = (e) => {
     const { name, value } = e.target;
     setUpdatedUserData({ ...updatedUserData, [name]: value });
+  };
+
+  const handleFeedbackChange = (e) => {
+    setFeedback(e.target.value);
+  };
+
+  const handleSubmitFeedback = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const response = await axios.post(`${API_URL}/feedback`, { feedback }, {
+        headers: { 
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}` }
+      });
+
+      if (response.data.message === 'Feedback submitted successfully') {
+        setFeedbackMessage('Thank you for your feedback!');
+        setFeedback(''); // Clear the feedback field after submission
+      }
+    } catch (error) {
+      setFeedbackMessage('Failed to submit feedback. Please try again.');
+    }
   };
 
   const handleSaveProfile = async () => {
@@ -65,12 +93,10 @@ const Dashboard = () => {
       setIsEditing(false);
       alert('Profile updated successfully!');
     } catch (error) {
-      console.error('Error saving profile:', error);
-      alert('Failed to update profile.');
+      setError('Failed to update profile.');
     }
   };
 
-  // Apply for a shift
   const applyForShift = async (shiftId) => {
     try {
       const token = localStorage.getItem('token');
@@ -83,12 +109,10 @@ const Dashboard = () => {
         alert('Shift application successful!');
       }
     } catch (error) {
-      console.error('Error applying for shift:', error);
-      alert('Failed to apply for shift.');
+      setError('Failed to apply for shift.');
     }
   };
 
-  // Mark shift as completed
   const completeShift = async (shiftId) => {
     try {
       const token = localStorage.getItem('token');
@@ -97,7 +121,6 @@ const Dashboard = () => {
       });
 
       if (response.data.message === 'Shift completed successfully') {
-        // Update the assigned shifts after completion
         const updatedShifts = assignedShifts.map(shift => {
           if (shift._id === shiftId) {
             shift.status = 'completed';
@@ -109,8 +132,7 @@ const Dashboard = () => {
         alert('Shift completed successfully!');
       }
     } catch (error) {
-      console.error('Error completing shift:', error);
-      alert('Failed to complete shift.');
+      setError('Failed to complete shift.');
     }
   };
 
@@ -118,6 +140,9 @@ const Dashboard = () => {
     <div className="dashboard-page">
       <h1 className="dashboard-title">Volunteer Dashboard</h1>
       <div className="dashboard-container">
+        {loading && <div className="loading">Loading...</div>}
+        {error && <div className="error">{error}</div>}
+        {feedbackMessage && <div className="feedback-message">{feedbackMessage}</div>} {/* Display feedback message */}
 
         {/* Profile Section */}
         <div className="profile-section">
@@ -135,7 +160,7 @@ const Dashboard = () => {
           <div className="profile-picture-section">
             <h3>Profile Picture</h3>
             <input type="file" accept="image/*" onChange={(e) => setProfilePicture(e.target.files[0])} />
-            {profilePicture && <img src={URL.createObjectURL(profilePicture)} alt="Profile" />}
+            {profilePicture && <img class="rounded-circle w-25" src={URL.createObjectURL(profilePicture)} alt="Profile" />}
           </div>
 
           <div className="profile-info">
@@ -195,7 +220,7 @@ const Dashboard = () => {
         <div className="assigned-shifts">
           <h2>Assigned Shifts</h2>
           <div className="shift-cards-container">
-            {assignedShifts && assignedShifts.length > 0 ? assignedShifts.map((shift) => (
+            {assignedShifts.length > 0 ? assignedShifts.map((shift) => (
               <div key={shift._id} className="shift-card">
                 <div className="shift-details">
                   <strong>Date:</strong> {shift.date}, <strong>Time:</strong> {shift.time}, <strong>Location:</strong> {shift.location}, <strong>Task:</strong> {shift.task}, <strong>Hours Worked:</strong> {shift.hoursWorked || 'Not available'}
@@ -214,7 +239,7 @@ const Dashboard = () => {
         <div className="available-shifts">
           <h2 className="section-title">Available Shifts</h2>
           <div className="shift-cards-container">
-            {shifts && shifts.length > 0 ? shifts.map((shift) => (
+            {shifts.length > 0 ? shifts.map((shift) => (
               <div key={shift._id} className="shift-card">
                 <div className="shift-details">
                   <h3 className="shift-task">{shift.task}</h3>
@@ -232,6 +257,22 @@ const Dashboard = () => {
               </div>
             )) : <p>No available shifts</p>}
           </div>
+        </div>
+
+        {/* Feedback Collection Section */}
+        <div className="feedback-section">
+          <h2>Feedback Collection</h2>
+          <textarea
+            name="feedback"
+            placeholder="Please provide your feedback here..."
+            value={feedback}
+            onChange={handleFeedbackChange}
+            rows="4"
+            className="feedback-textarea"
+          />
+          <button onClick={handleSubmitFeedback} className="submit-feedback-btn">
+            Submit Feedback
+          </button>
         </div>
       </div>
     </div>
